@@ -17,6 +17,7 @@ function App() {
             </div>
             <EmployeesList />
             <EmployeesAddFrom />
+            <EmployeesAddFrom />
         </div>
     )
 }
