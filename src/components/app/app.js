@@ -7,6 +7,12 @@ import SearchPanel from "../search-panel/search-panel"
 import "./app.css"
 
 function App() {
+    const data = [
+        { name: "John S.", salary: 800, increase: false, id: 1 },
+        { name: "Alex H.", salary: 3000, increase: true, id: 2 },
+        { name: "Carl J.", salary: 18000, increase: false, id: 3 },
+    ]
+
     return (
         <div className="app">
             <AppInfo />
@@ -15,8 +21,7 @@ function App() {
                 <SearchPanel />
                 <AppFilter />
             </div>
-            <EmployeesList />
-            <EmployeesAddFrom />
+            <EmployeesList data={data} />
             <EmployeesAddFrom />
         </div>
     )
