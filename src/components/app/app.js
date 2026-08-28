@@ -13,12 +13,61 @@ class App extends Component {
         super(props)
         this.state = {
             data: [
-                { name: "John S.", salary: 800, increase: false, id: 1 },
-                { name: "Alex H.", salary: 3000, increase: true, id: 2 },
-                { name: "Carl J.", salary: 18000, increase: false, id: 3 },
+                {
+                    name: "John S.",
+                    salary: 800,
+                    increase: false,
+                    rise: true,
+                    id: 1,
+                },
+                {
+                    name: "Alex H.",
+                    salary: 3000,
+                    increase: true,
+                    rise: false,
+                    id: 2,
+                },
+                {
+                    name: "Carl J.",
+                    salary: 18000,
+                    increase: false,
+                    rise: false,
+                    id: 3,
+                },
             ],
+            term: "",
+            filter: "all",
         }
         this.maxId = 4
+    }
+
+    onUpdateSerch = (term) => {
+        this.setState({ term })
+    }
+
+    onToggleProp = (id, prop) => {
+        // this.setState(({ data }) => {
+        //     const index = data.findIndex((el) => el.id === id)
+        //     const old = data[index]
+        //     const newItem = { ...old, increase: !old.increase }
+        //     const newArr = [
+        //         ...data.slice(0, index),
+        //         newItem,
+        //         ...data.slice(index + 1),
+        //     ]
+        //     return {
+        //         data: newArr,
+        //     }
+        // })
+
+        this.setState(({ data }) => ({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    return { ...item, [prop]: !item[prop] }
+                }
+                return item
+            }),
+        }))
     }
 
     deleteItem = (id) => {
@@ -46,6 +95,7 @@ class App extends Component {
             name,
             salary,
             increase: false,
+            rise: false,
             id: this.maxId++,
         }
         this.setState(({ data }) => {
@@ -56,19 +106,55 @@ class App extends Component {
         })
     }
 
+    serchEmp = (items, term) => {
+        if (term.length === 0) {
+            return items
+        }
+
+        return items.filter((item) => {
+            return item.name.indexOf(term) > -1
+        })
+    }
+
+    filterPost = (items, filter) => {
+        switch (filter) {
+            case "rise":
+                return items.filter((item) => item.rise)
+            case "moreThen1000":
+                return items.filter((item) => item.salary > 1000)
+            default:
+                return items
+        }
+    }
+
+    onFilterSelect = (filter) => {
+        this.setState({ filter })
+    }
+
     render() {
-        console.log("look", this.state.data)
+        const { data, term, filter } = this.state
+
+        const employees = this.state.data.length
+        const increased = this.state.data.filter((item) => item.increase).length
+        const visibleData = this.filterPost(this.serchEmp(data, term), filter)
+
+        console.log("look", this.state)
+
         return (
             <div className="app">
-                <AppInfo />
+                <AppInfo employees0={employees} increased0={increased} />
 
                 <div className="search-panel">
-                    <SearchPanel />
-                    <AppFilter />
+                    <SearchPanel onUpdateSerch0={this.onUpdateSerch} />
+                    <AppFilter
+                        filter={filter}
+                        onFilterSelect0={this.onFilterSelect}
+                    />
                 </div>
                 <EmployeesList
-                    data={this.state.data}
+                    data={visibleData}
                     onDelete0={this.deleteItem}
+                    onToggleProp0={this.onToggleProp}
                 />
                 <EmployeesAddFrom onAdd={this.addItem} />
             </div>
