@@ -26,7 +26,15 @@ const EmployeeListItem = (props) => {
     //     // console.log(this.state.rise)
     // }
 
-    const { name, salary, onDelete1, onTogglePropF, increase, rise } = props
+    const {
+        name,
+        salary,
+        onDelete1,
+        onTogglePropF,
+        increase,
+        rise,
+        changeSalary,
+    } = props
 
     let classNames = "list-group-item d-flex justify-content-between"
     if (increase) {
@@ -49,6 +57,7 @@ const EmployeeListItem = (props) => {
                 type="text"
                 className="list-group-item-input"
                 defaultValue={salary + "$"}
+                onChange={changeSalary}
             />
             <div className="d-flex justify-content-center align-items-center">
                 <button

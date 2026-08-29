@@ -70,6 +70,17 @@ class App extends Component {
         }))
     }
 
+    changeSalary = (id, newSalary) => {
+        this.setState(({ data }) => ({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    return { ...item, salary: newSalary }
+                }
+                return item
+            }),
+        }))
+    }
+
     deleteItem = (id) => {
         this.setState(({ data }) => {
             // console.log(data)
@@ -155,6 +166,7 @@ class App extends Component {
                     data={visibleData}
                     onDelete0={this.deleteItem}
                     onToggleProp0={this.onToggleProp}
+                    changeSalary={this.changeSalary}
                 />
                 <EmployeesAddFrom onAdd={this.addItem} />
             </div>
